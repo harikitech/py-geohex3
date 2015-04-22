@@ -111,7 +111,8 @@ class TestGeohex(unittest.TestCase):
 
         for geohex_val, latitude, longitude in self.tests:
             zone = geohex.get_zone_by_code(geohex_val)
-            self.assertEqual([latitude, longitude], [zone.lat, zone.lon])
+            self.assertAlmostEqual(latitude, zone.lat)
+            self.assertAlmostEqual(longitude, zone.lon)
 
 
 def suite():
