@@ -1,6 +1,8 @@
 # py-geohex3
 Geohex v3.2 python implementation.
 
+[![Build Status](https://travis-ci.org/uncovertruth/py-geohex3.svg?branch=master)](https://travis-ci.org/uncovertruth/py-geohex3)
+
 ## Install
 
 ```
