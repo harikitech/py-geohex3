@@ -5,9 +5,21 @@ Geohex v3.2 python implementation.
 
 ## Install
 
+### PyPI
+
 ```
+pip install py-geohex3
+```
+
+### from source
+
+```
+git clone https://github.com/uncovertruth/py-geohex3.git
+
+cd py-geohex3
 python setup.py install
 ```
+
 
 ## Usage
 
