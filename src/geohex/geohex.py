@@ -10,8 +10,13 @@ h_k = math.tan(h_deg)
 _zone_cache = {}
 
 __all__ = [
-    'get_zone_by_code',
     'get_zone_by_location',
+    'get_xy_by_location',
+    'get_zone_by_code',
+    'get_zone_by_xy',
+    'loc2xy',
+    'xy2loc',
+    'adjust_xy',
 ]
 
 
@@ -181,13 +186,13 @@ class Zone(object):
 
 
 def get_zone_by_location(lat, lon, level):
-    """
+    """Returns GEOHEX Zone by location.
 
-    :param lat:
+    :param lat: latitude of location
     :type lat: float
-    :param lon:
+    :param lon: longitude of location
     :type lon: float
-    :param level:
+    :param level: geohex level
     :type level: int
     :return:
     :rtype: Zone
@@ -198,7 +203,7 @@ def get_zone_by_location(lat, lon, level):
 
 
 def get_zone_by_code(code):
-    """
+    """Returns GEOHEX Zone by GEOHEX Code.
 
     :param code:
     :type code: str

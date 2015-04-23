@@ -19,7 +19,7 @@ setup(
     name='py-geohex3',
     description='geohex v3.2 python implementation',
     url='https://github.com/uncovertruth/py-geohex3',
-    version='0.0.1',
+    version='0.0.2',
     author='UNCOVER TRUTH Inc.',
     author_email='info@uncovertruth.jp',
     test_suite='geohex_test.suite',

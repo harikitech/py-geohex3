@@ -1,0 +1,15 @@
+# 0.0.2
+
+* add functions below:
+
+  * get_xy_by_location
+  * get_zone_by_xy
+  * loc2xy
+  * xy2loc
+  * adjust_xy
+
+
+# 0.0.1
+
+* Ported GEOHEX V3.2 algorithm from JavaScript version (original version)
+
