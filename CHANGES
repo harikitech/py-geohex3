@@ -1,3 +1,13 @@
+# 0.0.3
+* Add Python3 support:
+
+  * Change division operator for Python2 and Python3 compatible
+  * Add `tox.ini` for multiple env tests
+  * Add py3.5 to `.travis.yml` for test Python3.5
+  * Fix PEP8 violation
+  * Fix `ResourceWarning: unclosed file` warning
+
+
 # 0.0.2
 
 * add functions below:
