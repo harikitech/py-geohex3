@@ -3,7 +3,9 @@
 
   * Change division operator for Python2 and Python3 compatible
   * Add `tox.ini` for multiple env tests
+  * Add py3.3 to `.travis.yml` for test Python3.3
   * Add py3.5 to `.travis.yml` for test Python3.5
+  * Add pypy to `.travis.yml` for test PyPy
   * Fix PEP8 violation
   * Fix `ResourceWarning: unclosed file` warning
 
