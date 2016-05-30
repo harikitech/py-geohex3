@@ -1,4 +1,5 @@
 # coding=utf-8
+from __future__ import division
 import math
 
 
@@ -42,7 +43,7 @@ def int2str(digit, base):
     else:
         while temp > 0:
             result.append(int2str_table[temp % base])
-            temp /= base
+            temp //= base
 
     if digit < 0:
         result.append('-')
@@ -298,7 +299,7 @@ def get_xy_by_code(code):
     h_decx = []
     h_decy = []
 
-    for i in range(len(h_dec3) / 2):
+    for i in range(len(h_dec3) // 2):
         h_decx.append(h_dec3[i * 2])
         h_decy.append(h_dec3[i * 2 + 1])
 

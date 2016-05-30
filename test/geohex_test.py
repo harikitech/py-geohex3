@@ -8,7 +8,8 @@ import unittest
 
 class TestGeohex(unittest.TestCase):
     def setUp(self):
-        self.tests = json.load(open(os.path.join(os.path.dirname(__file__), 'hex_v3.2_test_code2HEX.json'), 'r'))
+        with open(os.path.join(os.path.dirname(__file__), 'hex_v3.2_test_code2HEX.json'), 'r') as f:
+            self.tests = json.load(f)
 
     def test_consts(self):
         from geohex import geohex
@@ -119,4 +120,3 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTests(unittest.makeSuite(TestGeohex))
     return suite
-
