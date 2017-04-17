@@ -7,13 +7,13 @@ Geohex v3.2 python implementation.
 
 ### PyPI
 
-```
+```shell
 pip install py-geohex3
 ```
 
 ### from source
 
-```
+```shell
 git clone https://github.com/uncovertruth/py-geohex3.git
 
 cd py-geohex3
@@ -23,7 +23,7 @@ python setup.py install
 
 ## Usage
 
-```
+```python
 import geohex
 
 ## retrieve geohex code from latitude / longitude
