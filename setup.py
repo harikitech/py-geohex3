@@ -26,7 +26,7 @@ setup(
     url='https://github.com/uncovertruth/py-geohex3',
     version='1.0.0',
     author='UNCOVER TRUTH Inc.',
-    author_email='info@uncovertruth.co.jp',
+    author_email='develop@uncovertruth.co.jp',
     test_suite='geohex_test.suite',
     classifiers=classifiers,
     platforms='any',
