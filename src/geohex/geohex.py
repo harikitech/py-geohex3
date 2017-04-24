@@ -198,6 +198,11 @@ def get_zone_by_location(lat, lon, level):
     :return:
     :rtype: Zone
     """
+    if not isinstance(level, int):
+        raise ValueError('Level must be set integer')
+    if level < 0:
+        raise ValueError('Level must be set positive value')
+
     xy = get_xy_by_location(lat, lon, level)
     zone = get_zone_by_xy(xy['x'], xy['y'], level)
     return zone
