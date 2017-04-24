@@ -101,7 +101,7 @@ class TestGeohex(unittest.TestCase):
 
         # ValueError
         self.assertRaises(ValueError, geohex.get_zone_by_location, 35.65858, 139.745433, -1)
-        self.assertRaises(ValueError, geohex.get_zone_by_location, 35.65858, 139.745433, '1')
+        self.assertRaises(TypeError, geohex.get_zone_by_location, 35.65858, 139.745433, '1')
 
     def test_get_zone_by_code(self):
         from geohex import geohex
