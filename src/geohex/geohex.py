@@ -199,7 +199,7 @@ def get_zone_by_location(lat, lon, level):
     :rtype: Zone
     """
     if not isinstance(level, int):
-        raise ValueError('Level must be set integer')
+        raise TypeError('Level must be set integer')
     if level < 0:
         raise ValueError('Level must be set positive value')
 
