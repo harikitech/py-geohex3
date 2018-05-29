@@ -22,3 +22,6 @@ deploy:
     repo: uncovertruth/py-geohex3
     tags: true
     python: 3.6
+notifications:
+  slack:
+    secure: m5hovjTyuUpqmA0qKuukzQ0bispnyNTLh1Wj4hXb2h+HZ+mIt56fHUaMM2NtnA5bXkpMsAqqz9gNMQlD442YuVvWDO8auJHw7iqcXxntN1PJxrw5VWBDoXcpiiyGcBLYAE1DIXO2J7bBUBURm4mZam51AozqU8s4VJUjFvG8vE4=
