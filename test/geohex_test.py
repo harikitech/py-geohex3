@@ -97,7 +97,7 @@ class TestGeohex(unittest.TestCase):
 
         for geohex_val, latitude, longitude in self.tests:
             zone = geohex.get_zone_by_location(latitude, longitude, len(geohex_val))
-            self.assertTrue(zone.code.startswith(geohex_val))
+            self.assertTrue(zone.code.startswith(geohex_val), msg="geohex code=%s, zone=%s" % (geohex_val, zone))
 
         # ValueError
         self.assertRaises(ValueError, geohex.get_zone_by_location, 35.65858, 139.745433, -1)
@@ -116,8 +116,8 @@ class TestGeohex(unittest.TestCase):
 
         for geohex_val, latitude, longitude in self.tests:
             zone = geohex.get_zone_by_code(geohex_val)
-            self.assertAlmostEqual(latitude, zone.lat)
-            self.assertAlmostEqual(longitude, zone.lon)
+            self.assertAlmostEqual(latitude, zone.lat,  msg="geohex code=%s" % geohex_val)
+            self.assertAlmostEqual(longitude, zone.lon,  msg="geohex code=%s" % geohex_val)
 
 
 def suite():
