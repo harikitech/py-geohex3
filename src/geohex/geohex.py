@@ -296,9 +296,9 @@ def get_xy_by_code(code):
 
     if len(h_dec9) > 2 and h_dec9[0] in ["1", "5"] \
             and h_dec9[1] not in ["1", "2", "5"] and h_dec9[2] not in ["1", "2", "5"]:
-        if int(h_dec9[0]) == 5:
+        if h_dec9[0] == "5":
             h_dec9 = "7" + h_dec9[1:len(h_dec9)]
-        elif int(h_dec9[0]) == 1:
+        elif h_dec9[0] == "1":
             h_dec9 = "3" + h_dec9[1:len(h_dec9)]
 
     d9xlen = len(h_dec9)
