@@ -2,7 +2,6 @@
 from __future__ import division
 import math
 
-
 h_key = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 h_base = 20037508.34
 h_deg = math.pi * (30.0 / 180.0)
@@ -145,6 +144,18 @@ class Zone(object):
         self.y = y
         self.code = code
 
+    def __repr__(self):
+        return "<%s.%s object at %x: lat=%f, lon=%f, x=%d, y=%d, code=%s>" % (
+            self.__module__,
+            self.__class__.__name__,
+            id(self),
+            self.lat,
+            self.lon,
+            self.x,
+            self.y,
+            self.code,
+        )
+
     def get_level(self):
         """
         :rtype: int
@@ -187,7 +198,8 @@ class Zone(object):
 
 
 def get_zone_by_location(lat, lon, level):
-    """Returns GEOHEX Zone by location.
+    """
+    Returns GEOHEX Zone by location.
 
     :param lat: latitude of location
     :type lat: float
@@ -209,7 +221,8 @@ def get_zone_by_location(lat, lon, level):
 
 
 def get_zone_by_code(code):
-    """Returns GEOHEX Zone by GEOHEX Code.
+    """
+    Returns GEOHEX Zone by GEOHEX Code.
 
     :param code:
     :type code: str
@@ -266,6 +279,7 @@ def get_xy_by_location(lat, lon, level):
 
 def get_xy_by_code(code):
     """
+    Get dictionary that contains xy position by GEOHEX Code.
 
     :param code:
     :type code: str
@@ -280,7 +294,8 @@ def get_xy_by_code(code):
 
     h_dec9 = '' + str(h_key.find(code[0]) * 30 + h_key.find(code[1])) + code[2:]
 
-    if h_dec9[0] in [1, 5] and h_dec9[1] in [1, 2, 5] and h_dec9[2] in [1, 2, 5]:
+    if len(h_dec9) > 2 and h_dec9[0] in ["1", "5"] \
+            and h_dec9[1] not in ["1", "2", "5"] and h_dec9[2] not in ["1", "2", "5"]:
         if int(h_dec9[0]) == 5:
             h_dec9 = "7" + h_dec9[1:len(h_dec9)]
         elif int(h_dec9[0]) == 1:
@@ -330,6 +345,7 @@ def get_xy_by_code(code):
 
 def get_zone_by_xy(x, y, level):
     """
+    Returns GEOHEX Zone object by xy.
 
     :param x:
     :type x: float
