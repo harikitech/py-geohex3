@@ -1,8 +1,8 @@
 # coding=utf-8
-from __future__ import division
 import math
+from typing import Dict, List
 
-h_key = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+h_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 h_base = 20037508.34
 h_deg = math.pi * (30.0 / 180.0)
 h_k = math.tan(h_deg)
@@ -10,74 +10,68 @@ h_k = math.tan(h_deg)
 _zone_cache = {}
 
 __all__ = [
-    'get_zone_by_location',
-    'get_xy_by_location',
-    'get_zone_by_code',
-    'get_zone_by_xy',
-    'loc2xy',
-    'xy2loc',
-    'adjust_xy',
+    "get_zone_by_location",
+    "get_xy_by_location",
+    "get_zone_by_code",
+    "get_zone_by_xy",
+    "loc2xy",
+    "xy2loc",
+    "adjust_xy",
 ]
 
 
-def int2str(digit, base):
+def int2str(digit: int, base: int) -> str:
     """
 
     :param digit:
-    :type digit: int
     :param base:
-    :type base: int
     :return:
     """
-    int2str_table = '0123456789abcdefghijklmnopqrstuvwxyz'
+    int2str_table = "0123456789abcdefghijklmnopqrstuvwxyz"
 
     if not 2 <= base <= 36:
-        raise ValueError('base must be 2 <= base < 36')
+        raise ValueError("base must be 2 <= base < 36")
 
     result = []
 
     temp = abs(digit)
     if temp == 0:
-        result.append('0')
+        result.append("0")
     else:
         while temp > 0:
             result.append(int2str_table[temp % base])
             temp //= base
 
     if digit < 0:
-        result.append('-')
+        result.append("-")
 
-    return ''.join(reversed(result))
+    return "".join(reversed(result))
 
 
-def calc_hex_size(level):
+def calc_hex_size(level: int) -> float:
     """
 
     :param level:
-    :type level: int
     :return:
     :rtype: float
     """
     return h_base / math.pow(3, level + 3)
 
 
-def loc2xy(lon, lat):
+def loc2xy(lon: float, lat: float) -> dict:
     """
 
     :param lon: longitude of location
-    :type lon: float
     :param lat: latitude of location
-    :type lat: float
     :return:
-    :rtype: dict
     """
     x = lon * h_base / 180
     y = math.log(math.tan((90 + lat) * math.pi / 360)) / (math.pi / 180)
     y *= h_base / 180
-    return {'x': x, 'y': y}
+    return {"x": x, "y": y}
 
 
-def xy2loc(x, y):
+def xy2loc(x: float, y: float) -> dict:
     """
 
     :param x:
@@ -90,10 +84,10 @@ def xy2loc(x, y):
     lon = (x / h_base) * 180
     lat = (y / h_base) * 180
     lat = 180 / math.pi * (2 * math.atan(math.exp(lat * math.pi / 180)) - math.pi / 2)
-    return {'lon': lon, 'lat': lat}
+    return {"lon": lon, "lat": lat}
 
 
-def adjust_xy(x, y, level):
+def adjust_xy(x: float, y: float, level: int) -> dict:
     """
 
     :param x:
@@ -133,11 +127,11 @@ def adjust_xy(x, y, level):
             edge_y = h_xy
             x = edge_x - dif_x
             y = edge_y + dif_y
-    return {'x': x, 'y': y, 'rev': rev}
+    return {"x": x, "y": y, "rev": rev}
 
 
-class Zone(object):
-    def __init__(self, lat, lon, x, y, code):
+class Zone:
+    def __init__(self, lat: float, lon: float, x: float, y: float, code: str):
         self.lat = lat
         self.lon = lon
         self.x = x
@@ -145,82 +139,69 @@ class Zone(object):
         self.code = code
 
     def __repr__(self):
-        return "<%s.%s object at %x: lat=%f, lon=%f, x=%d, y=%d, code=%s>" % (
-            self.__module__,
-            self.__class__.__name__,
-            id(self),
-            self.lat,
-            self.lon,
-            self.x,
-            self.y,
-            self.code,
+        return "<%s.%s object at %x: lat=%f, lon=%f, x=%d, y=%d, code=%s>".format(
+                self.__module__,
+                self.__class__.__name__,
+                id(self),
+                self.lat,
+                self.lon,
+                self.x,
+                self.y,
+                self.code,
         )
 
-    def get_level(self):
-        """
-        :rtype: int
-        """
+    def get_level(self) -> int:
         return len(self.code) - 2
 
-    def get_hex_size(self):
-        """
-        :rtype: float
-        """
+    def get_hex_size(self) -> float:
         return calc_hex_size(self.get_level())
 
-    def get_hex_coors(self):
-        """
-        :rtype: dict
-        """
+    def get_hex_coors(self) -> List[Dict]:
         h_lat = self.lat
         h_lon = self.lon
         h_xy = loc2xy(h_lon, h_lat)
-        h_x = h_xy['x']
-        h_y = h_xy['y']
+        h_x = h_xy["x"]
+        h_y = h_xy["y"]
         h_deg = math.tan(math.pi * (60 / 180))
         h_size = self.get_hex_size()
-        h_top = xy2loc(h_x, h_y + h_deg * h_size)['lat']
-        h_btm = xy2loc(h_x, h_y - h_deg * h_size)['lat']
+        h_top = xy2loc(h_x, h_y + h_deg * h_size)["lat"]
+        h_btm = xy2loc(h_x, h_y - h_deg * h_size)["lat"]
 
-        h_l = xy2loc(h_x - 2 * h_size, h_y)['lon']
-        h_r = xy2loc(h_x + 2 * h_size, h_y)['lon']
-        h_cl = xy2loc(h_x - 1 * h_size, h_y)['lon']
-        h_cr = xy2loc(h_x + 1 * h_size, h_y)['lon']
+        h_l = xy2loc(h_x - 2 * h_size, h_y)["lon"]
+        h_r = xy2loc(h_x + 2 * h_size, h_y)["lon"]
+        h_cl = xy2loc(h_x - 1 * h_size, h_y)["lon"]
+        h_cr = xy2loc(h_x + 1 * h_size, h_y)["lon"]
 
         return [
-            {'lat': h_lat, 'lon': h_l},
-            {'lat': h_top, 'lon': h_cl},
-            {'lat': h_top, 'lon': h_cr},
-            {'lat': h_lat, 'lon': h_r},
-            {'lat': h_btm, 'lon': h_cr},
-            {'lat': h_btm, 'lon': h_cl}
+            {"lat": h_lat, "lon": h_l},
+            {"lat": h_top, "lon": h_cl},
+            {"lat": h_top, "lon": h_cr},
+            {"lat": h_lat, "lon": h_r},
+            {"lat": h_btm, "lon": h_cr},
+            {"lat": h_btm, "lon": h_cl}
         ]
 
 
-def get_zone_by_location(lat, lon, level):
+def get_zone_by_location(lat: float, lon: float, level: int) -> Zone:
     """
     Returns GEOHEX Zone by location.
 
     :param lat: latitude of location
-    :type lat: float
     :param lon: longitude of location
-    :type lon: float
     :param level: geohex level
-    :type level: int
     :return:
-    :rtype: Zone
     """
     if not isinstance(level, int):
-        raise TypeError('Level must be set integer')
+        raise TypeError("Level must be set integer")
     if level < 0:
-        raise ValueError('Level must be set positive value')
+        raise ValueError("Level must be set positive value")
 
     xy = get_xy_by_location(lat, lon, level)
-    zone = get_zone_by_xy(xy['x'], xy['y'], level)
+    zone = get_zone_by_xy(xy["x"], xy["y"], level)
     return zone
 
 
-def get_zone_by_code(code):
+def get_zone_by_code(code: str) -> Zone:
     """
     Returns GEOHEX Zone by GEOHEX Code.
 
@@ -231,27 +212,23 @@ def get_zone_by_code(code):
     """
     xy = get_xy_by_code(code)
     level = len(code) - 2
-    zone = get_zone_by_xy(xy['x'], xy['y'], level)
+    zone = get_zone_by_xy(xy["x"], xy["y"], level)
     return zone
 
 
-def get_xy_by_location(lat, lon, level):
+def get_xy_by_location(lat: float, lon: float, level: int) -> dict:
     """
     Get location by XY
 
     :param lat: latitude of location
-    :type lat: float
     :param lon: longitude of location
-    :type lon: float
     :param level: geohex level
-    :type level: int
     :return:
-    :rtype: dict
     """
     h_size = calc_hex_size(level)
     z_xy = loc2xy(lon, lat)
-    lon_grid = z_xy['x']
-    lat_grid = z_xy['y']
+    lon_grid = z_xy["x"]
+    lat_grid = z_xy["y"]
     unit_x = 6 * h_size
     unit_y = 6 * h_size * h_k
     h_pos_x = (lon_grid + lat_grid / h_k) / unit_x
@@ -273,12 +250,12 @@ def get_xy_by_location(lat, lon, level):
             h_y = h_y_0
 
     inner_xy = adjust_xy(h_x, h_y, level)
-    h_x = inner_xy['x']
-    h_y = inner_xy['y']
-    return {'x': h_x, 'y': h_y}
+    h_x = inner_xy["x"]
+    h_y = inner_xy["y"]
+    return {"x": h_x, "y": h_y}
 
 
-def get_xy_by_code(code):
+def get_xy_by_code(code: str) -> dict:
     """
     Get dictionary that contains xy position by GEOHEX Code.
 
@@ -293,7 +270,7 @@ def get_xy_by_code(code):
     h_x = 0
     h_y = 0
 
-    h_dec9 = '' + str(h_key.find(code[0]) * 30 + h_key.find(code[1])) + code[2:]
+    h_dec9 = "" + str(h_key.find(code[0]) * 30 + h_key.find(code[1])) + code[2:]
 
     if len(h_dec9) > 2 and h_dec9[0] in ["1", "5"] \
             and h_dec9[1] not in ["1", "2", "5"] and h_dec9[2] not in ["1", "2", "5"]:
@@ -338,24 +315,20 @@ def get_xy_by_code(code):
             h_y += h_pow
 
     inner_xy = adjust_xy(h_x, h_y, level)
-    h_x = inner_xy['x']
-    h_y = inner_xy['y']
+    h_x = inner_xy["x"]
+    h_y = inner_xy["y"]
 
     return {"x": h_x, "y": h_y}
 
 
-def get_zone_by_xy(x, y, level):
+def get_zone_by_xy(x: float, y: float, level: int) -> Zone:
     """
     Returns GEOHEX Zone object by xy.
 
     :param x:
-    :type x: float
     :param y:
-    :type y: float
     :param level:
-    :type level: int
     :return:
-    :rtype: Zone
     """
     h_size = calc_hex_size(level)
 
@@ -369,8 +342,8 @@ def get_zone_by_xy(x, y, level):
     h_lon = (h_lat - h_y * unit_y) / h_k
 
     z_loc = xy2loc(h_lon, h_lat)
-    z_loc_x = z_loc['lon']
-    z_loc_y = z_loc['lat']
+    z_loc_x = z_loc["lon"]
+    z_loc_y = z_loc["lat"]
 
     max_h_steps = math.pow(3, level + 2)
     h_steps = abs(h_x - h_y)
@@ -382,11 +355,11 @@ def get_zone_by_xy(x, y, level):
             h_y = tmp
         z_loc_x = -180
 
-    h_code = ''
+    h_code = ""
     code3_x = []
     code3_y = []
-    code3 = ''
-    code9 = ''
+    code3 = ""
+    code9 = ""
     mod_x = h_x
     mod_y = h_y
 
